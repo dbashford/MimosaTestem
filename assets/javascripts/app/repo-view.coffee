@@ -1,48 +1,37 @@
-define ['jquery',
-  'lodash',
-  'moment'
-  'templates'],
+define ['jquery', 'lodash', 'moment', 'templates'],
 ($, _, moment, templates) ->
 
   class RepoListView
 
     constructor: ->
-      @workflow()
-
       $('button').click =>
         repoName = $('input').val()
         if repoName.length > 0
-          @workflow repoName
+          @search repoName
 
-    workflow: (repoName = "dbashford") ->
-      @search repoName, (results) =>
-        @process results
-        @render results
-
-    search: (repo, cb) ->
+    search: (repo = "dbashford") ->
       url = "https://api.github.com/users/#{repo}/repos?type=owner&sort=updated"
       $.getJSON(url).always (data, status, xhr) =>
-        cb results:data, limit: @rateLimiting xhr
+        results = _.extend {results: @process data, name:repo}, @rateLimiting xhr.getResponseHeader
+        @render results
 
-    rateLimiting: (xhr) ->
-      rateLimitData =
-        limit: xhr.getResponseHeader 'X-RateLimit-Limit'
-        remaining: xhr.getResponseHeader 'X-RateLimit-Remaining'
-      if rateLimitData.remaining is 0
-        rateLimitData.canUseWhen = moment(new Date(xhr.getResponseHeader('X-RateLimit-Reset') * 1000)).fromNow()
-      rateLimitData
+    rateLimiting: (rhs) ->
+      limit: rhs 'X-RateLimit-Limit'
+      remaining: rhs 'X-RateLimit-Remaining'
+      limited: rhs('X-RateLimit-Remaining') is 0
+      canUseWhen: moment(new Date(rhs('X-RateLimit-Reset') * 1000)).fromNow()
 
     process: (data) ->
-      if data.results.length > 25
-        data.results = _.initial data.results, data.results.length - 25
+      return [] unless data
 
-      data.results = _.map data.results, (result) ->
+      if data.length > 25
+        data = _.initial data, data.length - 25
+
+      _.map data, (result) ->
         name: result.name
         url:  result.html_url
         desc: result.description
 
     render: (data) ->
-      html = templates.results results:data.results
+      html = templates.results data
       $('#results').html html
-
-  RepoListView

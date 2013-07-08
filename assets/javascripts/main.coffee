@@ -6,4 +6,4 @@ require
     moment: 'vendor/moment'
   , ['app/repo-view']
   , (RepoView) ->
-    new RepoView()
+    new RepoView().search()
