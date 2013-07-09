@@ -1,4 +1,7 @@
-define ['jquery', 'lodash', 'moment', 'templates'],
+define ['jquery',
+  'lodash',
+  'moment',
+  'templates'],
 ($, _, moment, templates) ->
 
   class RepoListView
@@ -11,13 +14,22 @@ define ['jquery', 'lodash', 'moment', 'templates'],
 
     search: (repo = "dbashford") ->
       url = "https://api.github.com/users/#{repo}/repos?type=owner&sort=updated&date=#{new Date().getTime()}"
-      $.getJSON(url).success (data, status, xhr) =>
-        @render @buildResults(data, xhr, repo)
-      .fail (xhr) =>
-        @render @buildResults([], xhr, repo)
+      $.getJSON(url).success(@searchSuccess repo).fail(@searchFail repo)
+
+    searchSuccess: (repo) ->
+      (data, status, xhr) =>
+        results = @buildResults data, xhr, repo
+        @render results
+
+    searchFail: (repo) ->
+      (xhr) =>
+        results = @buildResults [], xhr, repo
+        @render results
 
     buildResults: (data, xhr, repo) ->
-      _.extend {results: @process data, name:repo}, @rateLimiting xhr.getResponseHeader
+      processedData = @processData data
+      rateLimitingData = @rateLimiting xhr.getResponseHeader
+      _.extend {results: processedData, name:repo}, rateLimitingData
 
     rateLimiting: (rhs) ->
       limit: rhs 'X-RateLimit-Limit'
@@ -25,7 +37,7 @@ define ['jquery', 'lodash', 'moment', 'templates'],
       limited: rhs('X-RateLimit-Remaining') is "0"
       canUseWhen: moment(new Date(rhs('X-RateLimit-Reset') * 1000)).fromNow()
 
-    process: (data) ->
+    processData: (data) ->
       if data.length > 25
         data = _.initial data, data.length - 25
 

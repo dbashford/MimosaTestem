@@ -1,9 +1,9 @@
-<p>
-  The rate limit is <b>{{limit}}</b> requests per hour.
-  You have <b>{{remaining}}</b> requests remaining.
+<p id="limiting-information">
+  The rate limit is <b id="limit">{{limit}}</b> requests per hour.
+  You have <b id="calls-remaining">{{remaining}}</b> requests remaining.
 </p>
 {{#if limited}}
-  <p>
+  <p id="shutdown">
     GitHub has <span class="alert">shut you down</span>.
     GitHub will be cool with you {{canUseWhen}}.
   </p>
