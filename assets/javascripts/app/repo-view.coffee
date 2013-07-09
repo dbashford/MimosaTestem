@@ -4,15 +4,21 @@ define ['jquery',
   'templates'],
 ($, _, moment, templates) ->
 
-  class RepoListView
+  class OwnerRepoListView
 
     constructor: ->
-      $('button').click =>
-        repoName = $('input').val()
-        if repoName.length > 0
-          @search repoName
+      $('button').click(@searchOwner)
+      $('input').keyup(@searchCheck)
 
-    search: (repo = "dbashford") ->
+    searchCheck: (e) =>
+      @searchOwner() if e.keyCode is 13
+
+    searchOwner: =>
+      repoName = $('input').val()
+      if repoName.length > 0
+        @executeSearch repoName
+
+    executeSearch: (repo) ->
       url = "https://api.github.com/users/#{repo}/repos?type=owner&sort=updated&date=#{new Date().getTime()}"
       $.getJSON(url).success(@searchSuccess repo).fail(@searchFail repo)
 

@@ -1,17 +1,21 @@
 {{> limiting}}
 
-<p>Results for Repository Owner: <b id="repo-owner">{{name}}</b></p>
+{{#unless limited}}
 
-{{#if results}}
+  <p>Results for Repository Owner: <b id="repo-owner">{{name}}</b></p>
 
-  <ol id="result-list">
-  {{#each results}}
-    <li>{{> result}}</li>
-  {{/each}}
-  </ol>
+  {{#if results}}
 
-{{else}}
+    <ol id="result-list">
+    {{#each results}}
+      <li>{{> result}}</li>
+    {{/each}}
+    </ol>
 
-   <p id="unknown-owner">Unknown Repo Owner</p>
+  {{else}}
 
-{{/if}}
+     <p id="unknown-owner">Unknown Repo Owner</p>
+
+  {{/if}}
+
+{{/unless}}
