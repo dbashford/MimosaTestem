@@ -13,6 +13,7 @@ To read more about [mimosa-testem-require](https://github.com/dbashford/mimosa-t
 * `npm install -g phantomjs` (necessary for headless test running)
 * `git clone https://github.com/dbashford/MimosaTestem`
 * `cd MimosaTestem`
+* `npm install`
 * `mimosa watch -s`
 
 ## What will happen?
