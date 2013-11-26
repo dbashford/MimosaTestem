@@ -1,2 +1,2 @@
 exports.config =
-  modules: ["server","require","minify","lint","live-reload","testem-require"]
+  modules: ["server","require","minify","jshint","csslint","live-reload","testem-require"]
