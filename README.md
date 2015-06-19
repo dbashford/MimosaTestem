@@ -9,7 +9,7 @@ To read more about [mimosa-testem-require](https://github.com/dbashford/mimosa-t
 
 ## How to Use
 
-* Install the latest Mimosa. `0.13.12` required.
+* Install the latest Mimosa.
 * `npm install -g phantomjs` (necessary for headless test running)
 * `git clone https://github.com/dbashford/MimosaTestem`
 * `cd MimosaTestem`
@@ -18,7 +18,7 @@ To read more about [mimosa-testem-require](https://github.com/dbashford/mimosa-t
 
 ## What will happen?
 
-First Mimosa will install into your project `mimosa-testem-require`, an external Mimosa module that does not come by default with Mimosa (yet).
+First Mimosa will install into your project `mimosa-testem-require`, an external Mimosa module that does not come by default with Mimosa.
 
 Then all of the default Mimosa stuff happens:
 

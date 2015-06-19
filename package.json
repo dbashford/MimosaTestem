@@ -1,15 +1,6 @@
 {
   "name": "mimosa-testem",
   "version": "0.0.1",
-  "homepage": "",
-  "author": "",
-  "description": "",
-  "contributors": [
-    {
-      "name": "",
-      "email": ""
-    }
-  ],
   "private": true,
   "dependencies": {
     "consolidate": "0.10.0",
